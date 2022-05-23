@@ -1,0 +1,41 @@
+﻿@page "/companies"
+@using DOBlazorApp.Shared
+@inject HttpClient Http
+
+<PageTitle>Companies</PageTitle>
+
+<h1>Companies</h1>
+
+@if (companies == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Company Name</th>
+                <th>Phone Number</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var company in companies)
+            {
+                <tr>
+                    <td>@company.CompanyName</td>
+                    <td>@company.PhoneNumber</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private Company[]? companies;
+
+    protected override async Task OnInitializedAsync()
+    {
+        companies = await Http.GetFromJsonAsync<Company[]>("companies");
+    }
+}
